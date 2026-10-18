@@ -1,0 +1,46 @@
+name: Publish Edge Dashboard
+on:
+  push:
+    branches: [main]
+    paths:
+      - "index.html"
+      - "assets/**"
+      - "data/**"
+      - "scripts/**"
+      - ".github/workflows/publish.yml"
+  workflow_dispatch:
+  schedule:
+    # ~15 minute SCORE cache refresh, not guaranteed real-time. Public repo only.
+    - cron: "7,22,37,52 * * * *"
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: edge-pages
+  cancel-in-progress: true
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/configure-pages@v5
+      - name: Verify sanitized public ledger snapshot
+        run: python3 scripts/verify_public_data.py
+      - name: Update public scores, keep original ledger snapshot unchanged
+        run: python3 scripts/update_scores.py
+      - name: Build whitelisted public artifact and validate ledger snapshot
+        run: python3 scripts/build_site.py
+      - name: Upload approved public files only
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: "_site"
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
