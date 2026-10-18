@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "source": "PRIVATE LEDGER — confirmed read-only historical snapshot",
+  "publishedAt": "2026-10-17T23:50:30Z",
+  "syncMode": "snapshot",
+  "paperTrading": true,
+  "disclaimer": "Simulated paper trading only. Ledger snapshot is historical; scores are separate. No real wagers. Scenario EV is exploratory.",
+  "portfolios": [
+    {
+      "name": "STRICT VALUE",
+      "available": 100,
+      "settledWins": 0,
+      "settledLosses": 0,
+      "realizedPL": 0,
+      "roiPercent": null,
+      "pendingCount": 0
+    },
+    {
+      "name": "SHADOW TEST",
+      "available": 94,
+      "settledWins": 0,
+      "settledLosses": 0,
+      "realizedPL": 0,
+      "roiPercent": null,
+      "pendingCount": 3
+    }
+  ],
+  "bets": [
+    {
+      "portfolio": "SHADOW TEST",
+      "sport": "NCAA Football",
+      "event": "Nebraska at Oregon",
+      "eventDate": "2026-10-17",
+      "market": "Game total points",
+      "selection": "Under 51.5",
+      "odds": -110,
+      "stake": 2,
+      "probability": 0.561,
+      "status": "PENDING",
+      "placedAt": "2026-10-17T21:56:21.872Z"
+    },
+    {
+      "portfolio": "SHADOW TEST",
+      "sport": "NCAA Football",
+      "event": "Oklahoma State at Houston",
+      "eventDate": "2026-10-17",
+      "market": "Game total points",
+      "selection": "Over 62.5",
+      "odds": -110,
+      "stake": 2,
+      "probability": 0.545,
+      "status": "PENDING",
+      "placedAt": "2026-10-17T21:56:51.132Z"
+    },
+    {
+      "portfolio": "SHADOW TEST",
+      "sport": "NCAA Football",
+      "event": "Kentucky at Oklahoma",
+      "eventDate": "2026-10-17",
+      "market": "Point spread",
+      "selection": "Kentucky +6.5",
+      "odds": -108,
+      "stake": 2,
+      "probability": 0.548,
+      "status": "PENDING",
+      "placedAt": "2026-10-17T22:28:59.028Z"
+    }
+  ],
+  "verifiedAsOf": "2026-10-17T23:50:30Z"
+}
