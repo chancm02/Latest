@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0b1018">
+  <meta name="description" content="Edge Bankroll — read-only simulated bankroll dashboard, rolling paper bet cards and near-live sports scores.">
+  <title>Edge Bankroll — Paper Trading Dashboard</title>
+  <link rel="stylesheet" href="./assets/style.css">
+</head>
+<body>
+<div class="app-shell">
+  <aside class="sidebar">
+    <div class="brand">
+      <span class="brandmark">E<span>∕</span></span>
+      <div><strong>EDGE</strong><small>BANKROLL ANALYTICS</small></div>
+    </div>
+    <div class="nav-label">WORKSPACE</div>
+    <nav class="nav-main" aria-label="Sections">
+      <a href="#overview" class="nav-link active"><span class="nav-icon">▦</span> Overview <span class="nav-mini">01</span></a>
+      <a href="#bets" class="nav-link"><span class="nav-icon">◎</span> Rolling cards <span id="navPending" class="nav-mini">—</span></a>
+      <a href="#scores" class="nav-link"><span class="nav-icon">◷</span> Score center <span class="nav-mini live-dot">●</span></a>
+      <a href="#transparency" class="nav-link"><span class="nav-icon">◈</span> Method & sync</a>
+    </nav>
+    <div class="side-bottom">
+      <div class="statusline"><span class="status-led"></span><span>PAPER TRADING ONLY</span></div>
+      <p>Tracking the decisions. Protecting the bankroll.</p>
+      <div class="side-fine">No wager placement · Read-only</div>
+    </div>
+  </aside>
+  <main class="workspace" id="overview">
+    <header class="topbar">
+      <div class="breadcrumbs"><span>WORKSPACE</span><span class="chev">/</span><b>EDGE OVERVIEW</b></div>
+      <div class="toolbar">
+        <div id="syncPill" class="sync-pill"><span class="status-led"></span><span>Loading snapshot</span></div>
+        <button class="icon-btn" id="refreshBtn" title="Reload published data" aria-label="Refresh published data">↻</button>
+      </div>
+    </header>
+    <div class="content">
+      <div class="page-intro">
+        <div>
+          <div class="eyebrow"><span class="eyebrow-dot"></span> EDGE INTELLIGENCE / DASHBOARD</div>
+          <h1>Your bankroll.<br><span>Every angle.</span></h1>
+          <p>One place for rolling paper bet cards, scores, and portfolio performance—without relying on the chat history.</p>
+        </div>
+        <div class="snapshot-clock"><span>LAST LEDGER SNAPSHOT</span><b id="snapshotTime">—</b><small id="snapshotMode">Checking data…</small></div>
+      </div>
+
+      <div class="notice" id="notice"><span class="notice-icon">ⓘ</span><span>This dashboard is read-only. Score updates do not settle bets; only committed ledger entries do.</span></div>
+      <section class="metric-grid" aria-label="Portfolio key performance indicators">
+        <article class="metric-card prime">
+          <div class="metric-top"><span>COMBINED AVAILABLE</span><span class="metric-icon">◈</span></div>
+          <strong class="metric-value" id="combinedAvailable">—</strong>
+          <div class="metric-bottom"><span id="availableDetail">Across both portfolios</span><span class="metric-tag">PAPER CASH</span></div>
+        </article>
+        <article class="metric-card"><div class="metric-top"><span>RESERVED STAKES</span><span class="metric-icon">◉</span></div><strong class="metric-value" id="reservedMetric">—</strong><div class="metric-bottom"><span id="pendingDetail">Open positions</span></div></article>
+        <article class="metric-card"><div class="metric-top"><span>REALIZED BETTING P/L</span><span class="metric-icon">↗</span></div><strong class="metric-value" id="plMetric">—</strong><div class="metric-bottom"><span>Excludes deposits & withdrawals</span></div></article>
+        <article class="metric-card"><div class="metric-top"><span>MAX POTENTIAL BANKROLL</span><span class="metric-icon">◇</span></div><strong class="metric-value" id="maxMetric">—</strong><div class="metric-bottom"><span>If all pending bets win</span></div></article>
+      </section>
+
+      <section class="portfolio-section">
+        <div class="section-title"><div><span class="section-kicker">PORTFOLIO STATUS</span><h2>Two strategies. One ledger.</h2></div></div>
+        <div id="portfolioCards" class="portfolio-grid"></div>
+      </section>
+
+      <section id="bets" class="bets-layout">
+        <div class="bets-primary">
+          <div class="section-title">
+            <div><span class="section-kicker">THE BET BOARD</span><h2>Rolling cards <span id="betCount" class="count-bubble">—</span></h2></div>
+            <span class="section-right">Source: committed ledger snapshot</span>
+          </div>
+          <div class="filter-tray">
+            <div class="tabs" role="group" aria-label="Filter bet status">
+              <button class="tab active" type="button" data-status="ALL">All bets</button>
+              <button class="tab" type="button" data-status="PENDING">Pending</button>
+              <button class="tab" type="button" data-status="SETTLED">Settled</button>
+            </div>
+            <select id="portfolioFilter" aria-label="Choose portfolio">
+              <option value="ALL">All portfolios</option><option value="SHADOW TEST">Shadow Test</option><option value="STRICT VALUE">Strict Value</option>
+            </select>
+          </div>
+          <div id="betsList" class="bets-list"><div class="loading-card">Loading verified paper bets…</div></div>
+        </div>
+        <aside class="score-panel" id="scores">
+          <div class="section-title"><div><span class="section-kicker">GAME CENTER</span><h2>Score watch</h2></div><span class="pulsedot"></span></div>
+          <div class="feed-meta"><span id="scoreRefreshState">Score feed: loading</span><span id="scoreAsOf">—</span></div>
+          <div id="scoresList" class="scores-list"><div class="loading-card">Loading score feed…</div></div>
+          <div class="scores-note">Game scores are informational only. Ledger settlement requires a verified outcome and an authorized settlement action.</div>
+        </aside>
+      </section>
+
+      <section class="method-section" id="transparency">
+        <div class="section-title"><div><span class="section-kicker">DATA INTEGRITY</span><h2>Know exactly what is current.</h2></div></div>
+        <div class="method-grid">
+          <div class="method-box"><span class="method-symbol">01</span><h3>Committed bets only</h3><p>Positions and cash come from a published read-only ledger snapshot. The page cannot create, change, or settle bets.</p></div>
+          <div class="method-box"><span class="method-symbol">02</span><h3>Scores are a separate feed</h3><p>Scores may update during games, but do not imply a paid return or change betting results without a settlement in the private ledger.</p></div>
+          <div class="method-box"><span class="method-symbol">03</span><h3>No invented edge</h3><p>Displayed model probabilities are experimental inputs from the original paper records. Expected value is a scenario, not a guaranteed advantage.</p></div>
+        </div>
+      </section>
+      <footer><span>EDGE BANKROLL / SIMULATED ANALYTICS</span><span>Read-only • Not an exchange • Not real wagers</span></footer>
+    </div>
+  </main>
+</div>
+<script defer src="./assets/app.js"></script>
+</body>
+</html>
